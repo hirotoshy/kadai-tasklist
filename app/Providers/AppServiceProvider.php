@@ -25,3 +25,4 @@ class AppServiceProvider extends ServiceProvider
     {
         \URL::forceScheme('https'); //リンクをHTTPSにする設定を行う
     }
+}
