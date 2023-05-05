@@ -19,6 +19,10 @@
                         <span class="label-text">タスク内容:</span>
                     </label>
                     <input type="text" name="content" class="input input-bordered w-full">
+                    <label for="content" class="label">
+                        <span class="label-text">ステータス:</span>
+                    </label>
+                    <input type="text" name="status" class="input input-bordered w-full">
                 </div>
 
             <button type="submit" class="btn btn-primary btn-outline">登録</button>

@@ -20,6 +20,10 @@
                         <span class="label-text">タスク内容:</span>
                     </label>
                     <input type="text" name="content" value="{{ $task->content }}" class="input input-bordered w-full">
+                                        <label for="content" class="label">
+                        <span class="label-text">ステータス:</span>
+                    </label>
+                    <input type="text" name="status" value="{{ $task->status }}" class="input input-bordered w-full">
                 </div>
 
             <button type="submit" class="btn btn-primary btn-outline">更新</button>
