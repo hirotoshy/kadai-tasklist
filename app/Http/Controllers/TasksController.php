@@ -84,10 +84,14 @@ class TasksController extends Controller
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
 
-        // メッセージ詳細ビューでそれを表示
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        if (\Auth::id() === $task->user_id) {
+            // メッセージ詳細ビューでそれを表示
+            return view('tasks.show', [
+                'task' => $task,
+            ]);
+        }
+        
+        return redirect('/');
     }
 
     /**
@@ -104,8 +108,8 @@ class TasksController extends Controller
         // メッセージ編集ビューでそれを表示
         if (\Auth::id() === $task->user_id) {
             return view('tasks.edit', [
-            'task' => $task,
-        ]);
+                'task' => $task,
+            ]);
         }
         return redirect('/');
     }
@@ -122,19 +126,20 @@ class TasksController extends Controller
         // idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
 
-        // バリデーション
-        $request->validate([
-            'title' => 'required|max:30',   // 追加
-            'content' => 'required|max:255',
-            'status' => 'required|max:10',
-        ]);
-        
-        
-        $task->update([
-            'title' => $request->title,
-            'content' => $request->content,
-            'status' => $request->status,
-        ]);
+        if (\Auth::id() === $task->user_id) {
+            // バリデーション
+            $request->validate([
+                'title' => 'required|max:30',   // 追加
+                'content' => 'required|max:255',
+                'status' => 'required|max:10',
+            ]);
+            
+            $task->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'status' => $request->status,
+            ]);
+        }
 
         // 前のURLへリダイレクトさせる
         return back();
@@ -154,12 +159,11 @@ class TasksController extends Controller
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は投稿を削除
         if (\Auth::id() === $task->user_id) {
             $task->delete();
-            return back()
+            return redirect('/')
                 ->with('success','Delete Successful');
-
-        // トップページへリダイレクトさせる
-        return back()
-            ->with('Delete Failed');
         }
+        // トップページへリダイレクトさせる
+            return redirect('/')
+                ->with('Delete Failed');
     }
 }
